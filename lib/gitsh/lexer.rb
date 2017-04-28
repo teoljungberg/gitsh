@@ -24,6 +24,8 @@ module Gitsh
       "'",                          # String terminator
     ]).freeze
 
+    VARIABLE_NAME = /[a-z_][a-z0-9_.-]*/.freeze
+
     class Environment < RLTK::Lexer::Environment
       attr_reader :right_paren_stack
 
@@ -90,8 +92,8 @@ module Gitsh
     rule(/"/, :soft_string) { pop_state }
 
     [:default, :soft_string].each do |state|
-      rule(/\$[a-z_][a-z0-9_.-]*/i, state) { |t| [:VAR, t[1..-1]] }
-      rule(/\$\{[a-z_][a-z0-9_.-]*\}/i, state) { |t| [:VAR, t[2..-2]] }
+      rule(/\$#{VARIABLE_NAME}/i, state) { |t| [:VAR, t[1..-1]] }
+      rule(/\$\{#{VARIABLE_NAME}\}/i, state) { |t| [:VAR, t[2..-2]] }
     end
 
     def self.lex(string, file_name = nil, env = self::Environment.new(@start_state))
