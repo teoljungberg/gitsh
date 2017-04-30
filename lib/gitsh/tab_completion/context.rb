@@ -11,6 +11,10 @@ module Gitsh
         words[0...-1]
       end
 
+      def completing_variable?
+        last_meaningful_token(tokens).type == :VAR
+      end
+
       private
 
       attr_reader :input
@@ -20,6 +24,9 @@ module Gitsh
           case token.type
           when :WORD
             words[0] = "#{token.value}#{words[0]}"
+            words
+          when :VAR
+            words[0] = "${#{token.value}}#{words[0]}"
             words
           when :SPACE
             [''] + words

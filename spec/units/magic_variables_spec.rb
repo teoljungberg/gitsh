@@ -116,4 +116,17 @@ describe Gitsh::MagicVariables do
       end
     end
   end
+
+  describe '#available_variables' do
+    it 'returns an array of variable names' do
+      repo = double('GitRepository')
+      magic_variables = described_class.new(repo)
+
+      expect(magic_variables.available_variables).to match_array [
+        :_prior,
+        :_merge_base,
+        :_rebase_base,
+      ]
+    end
+  end
 end
