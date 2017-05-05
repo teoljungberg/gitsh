@@ -2,6 +2,9 @@ module Gitsh
   module TabCompletion
     module Matchers
       class PathMatcher
+        def initialize(_env)
+        end
+
         def match?(_)
           true
         end
