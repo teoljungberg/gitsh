@@ -8,16 +8,16 @@ module Gitsh
         @start_state = start_state
       end
 
-      def match(tokens)
-        tokens.inject(start_states) do |current_states, token|
-          current_states.map { |state| state.follow(token) }.inject(Set.new, :|)
-        end
-      end
-
       def completions(context, token)
         match(context).
           flat_map { |state| state.completions(token) }.
           select { |option| option.start_with?(token) }
+      end
+
+      def match(tokens)
+        tokens.inject(start_states) do |current_states, token|
+          current_states.map { |state| state.follow(token) }.inject(Set.new, :|)
+        end
       end
 
       private
