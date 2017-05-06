@@ -15,7 +15,11 @@ module Gitsh
         end
 
         def completions(token)
-          [word]
+          if word.start_with?('-') ^ token.start_with?('-')
+            []
+          else
+            [word]
+          end
         end
 
         private
