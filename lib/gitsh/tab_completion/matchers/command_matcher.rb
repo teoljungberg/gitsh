@@ -6,6 +6,10 @@ module Gitsh
           @env = env
         end
 
+        def name
+          'command'
+        end
+
         def match?(_word)
           true
         end

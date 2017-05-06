@@ -6,6 +6,10 @@ module Gitsh
           @env = env
         end
 
+        def name
+          'remote'
+        end
+
         def match?(_)
           true
         end

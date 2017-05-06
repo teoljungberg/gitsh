@@ -8,6 +8,10 @@ module Gitsh
           @env = env
         end
 
+        def name
+          'revision'
+        end
+
         def match?(_)
           true
         end
