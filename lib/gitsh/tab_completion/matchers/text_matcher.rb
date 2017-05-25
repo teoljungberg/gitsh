@@ -6,15 +6,23 @@ module Gitsh
           @word = word
         end
 
-        def match?(word)
-          @word == word
+        def match?(match_word)
+          word == match_word
         end
 
         def completions(token)
           [word]
         end
 
-        private
+        def eql?(other)
+          other.is_a?(self.class) && other.word == word
+        end
+
+        def hash
+          self.class.hash + word.hash
+        end
+
+        protected
 
         attr_reader :word
       end
