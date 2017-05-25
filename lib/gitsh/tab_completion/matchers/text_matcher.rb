@@ -1,7 +1,9 @@
+require 'gitsh/tab_completion/matchers/base_matcher'
+
 module Gitsh
   module TabCompletion
     module Matchers
-      class TextMatcher
+      class TextMatcher < BaseMatcher
         def initialize(word)
           @word = word
         end
@@ -15,11 +17,11 @@ module Gitsh
         end
 
         def eql?(other)
-          other.is_a?(self.class) && other.word == word
+          super(other) && other.word == word
         end
 
         def hash
-          self.class.hash + word.hash
+          super + word.hash
         end
 
         protected

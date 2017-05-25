@@ -1,3 +1,5 @@
+require 'gitsh/tab_completion/matchers/base_matcher'
+
 module Gitsh
   module TabCompletion
     module Matchers
@@ -6,20 +8,8 @@ module Gitsh
           @env = env
         end
 
-        def match?(_)
-          true
-        end
-
         def completions(_)
           env.repo_remotes
-        end
-
-        def eql?(other)
-          self.class == other.class
-        end
-
-        def hash
-          self.class.hash + 1
         end
 
         private

@@ -1,22 +1,12 @@
+require 'gitsh/tab_completion/matchers/base_matcher'
+
 module Gitsh
   module TabCompletion
     module Matchers
-      class PathMatcher
-        def match?(_)
-          true
-        end
-
+      class PathMatcher < BaseMatcher
         def completions(token)
           prefix = normalize_path(token)
           paths(prefix).map { |option| option.sub(prefix, token) }
-        end
-
-        def eql?(other)
-          self.class == other.class
-        end
-
-        def hash
-          self.class.hash + 1
         end
 
         private
