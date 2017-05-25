@@ -31,4 +31,33 @@ describe Gitsh::TabCompletion::Matchers::CommandMatcher do
       ]
     end
   end
+
+  describe '#eql?' do
+    it 'returns true when given another instance of the same class' do
+      env = double(:env)
+      internal_command = double(:internal_command)
+      matcher1 = described_class.new(env, internal_command)
+      matcher2 = described_class.new(env, internal_command)
+
+      expect(matcher1.eql?(matcher2)).to be true
+    end
+
+    it 'returns false when given an instance of any other class' do
+      matcher = described_class.new(double(:env), double(:internal_command))
+      other = double(:not_a_matcher)
+
+      expect(matcher.eql?(double)).not_to be true
+    end
+  end
+
+  describe '#hash' do
+    it 'returns the same value for all instances of the class' do
+      env = double(:env)
+      internal_command = double(:internal_command)
+      matcher1 = described_class.new(env, internal_command)
+      matcher2 = described_class.new(env, internal_command)
+
+      expect(matcher1.hash).to eq(matcher2.hash)
+    end
+  end
 end

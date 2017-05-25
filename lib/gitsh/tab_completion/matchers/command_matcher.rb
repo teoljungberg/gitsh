@@ -15,6 +15,14 @@ module Gitsh
           env.git_commands + env.git_aliases + internal_command.commands
         end
 
+        def eql?(other)
+          self.class == other.class
+        end
+
+        def hash
+          self.class.hash + 1
+        end
+
         private
 
         attr_reader :env, :internal_command
