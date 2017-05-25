@@ -6,7 +6,7 @@ describe Gitsh::TabCompletion::Automaton do
   describe '#match' do
     context 'for a deterministic automaton' do
       it 'returns a set containing the end state' do
-        # 0 --a--> 1
+        # --> (0) --- a ---> (1)
 
         state_0 = described_class::State.new(0)
         state_1 = described_class::State.new(1)
@@ -21,9 +21,11 @@ describe Gitsh::TabCompletion::Automaton do
 
     context 'for a non-deterministic automaton' do
       it 'returns a set containing the end states' do
-        #  /--a--\    /--b--\
-        # 0       -> 1       -> 2
-        #  \-----/    \-----/
+        #       ,--- a ---,     ,--- b ---,
+        #       |         |     |         |
+        # ---> (0)        |--> (1)        |--> (2)
+        #       |         |     |         |
+        #       '---------'     '---------'
 
         state_0 = described_class::State.new(0)
         state_1 = described_class::State.new(1)
@@ -45,9 +47,11 @@ describe Gitsh::TabCompletion::Automaton do
   describe '#completions' do
     context 'for a deterministic automaton' do
       it 'returns possible completions' do
-        #  /--aa--> 1
-        # 0
-        #  \--ab--> 2
+        #       ,--- aa ---> (1)
+        #       |
+        # ---> (0)
+        #       |
+        #       '--- bb ---> (2)
 
         state_0 = described_class::State.new(0)
         state_1 = described_class::State.new(1)
@@ -67,9 +71,11 @@ describe Gitsh::TabCompletion::Automaton do
 
     context 'for a non-deterministic automaton' do
       it 'returns possible completions' do
-        #    /--aa--\
-        #   0        -> 1 --bb--> 2
-        #    \------/
+        #       ,--- aa ---,
+        #       |          v
+        # ---> (0)        (1) --- bb ---> (2)
+        #       |          ^
+        #       '----------'
 
         state_0 = described_class::State.new(0)
         state_1 = described_class::State.new(1)
