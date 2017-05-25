@@ -1,5 +1,4 @@
 require 'set'
-require 'gitsh/tab_completion/matchers/text_matcher'
 
 module Gitsh
   module TabCompletion
@@ -39,10 +38,6 @@ module Gitsh
 
         def add_transition(matcher, state)
           transitions[matcher] << state
-        end
-
-        def add_text_transition(word, state)
-          transitions[Matchers::TextMatcher.new(word)] << state
         end
 
         def add_free_transition(state)

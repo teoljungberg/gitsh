@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'gitsh/tab_completion/matchers/text_matcher'
 require 'gitsh/tab_completion/automaton'
 
 describe Gitsh::TabCompletion::Automaton do
@@ -9,7 +10,7 @@ describe Gitsh::TabCompletion::Automaton do
 
         state_0 = described_class::State.new(0)
         state_1 = described_class::State.new(1)
-        state_0.add_text_transition('a', state_1)
+        add_text_transition(state_0, 'a', state_1)
         automaton = described_class.new(state_0)
 
         expect(automaton.match([])).to eq [state_0].to_set
@@ -27,9 +28,9 @@ describe Gitsh::TabCompletion::Automaton do
         state_0 = described_class::State.new(0)
         state_1 = described_class::State.new(1)
         state_2 = described_class::State.new(2)
-        state_0.add_text_transition('a', state_1)
+        add_text_transition(state_0, 'a', state_1)
         state_0.add_free_transition(state_1)
-        state_1.add_text_transition('b', state_2)
+        add_text_transition(state_1, 'b', state_2)
         state_1.add_free_transition(state_2)
         automaton = described_class.new(state_0)
 
@@ -51,8 +52,8 @@ describe Gitsh::TabCompletion::Automaton do
         state_0 = described_class::State.new(0)
         state_1 = described_class::State.new(1)
         state_2 = described_class::State.new(2)
-        state_0.add_text_transition('aa', state_1)
-        state_0.add_text_transition('ab', state_2)
+        add_text_transition(state_0, 'aa', state_1)
+        add_text_transition(state_0, 'ab', state_2)
         automaton = described_class.new(state_0)
 
         expect(automaton.completions([], '')).to eq ['aa', 'ab']
@@ -73,9 +74,9 @@ describe Gitsh::TabCompletion::Automaton do
         state_0 = described_class::State.new(0)
         state_1 = described_class::State.new(1)
         state_2 = described_class::State.new(2)
-        state_0.add_text_transition('aa', state_1)
+        add_text_transition(state_0, 'aa', state_1)
         state_0.add_free_transition(state_1)
-        state_1.add_text_transition('bb', state_2)
+        add_text_transition(state_1, 'bb', state_2)
         automaton = described_class.new(state_0)
 
         expect(automaton.completions([], '')).to eq ['aa', 'bb']
@@ -84,5 +85,12 @@ describe Gitsh::TabCompletion::Automaton do
         expect(automaton.completions(['foo'], '')).to eq []
       end
     end
+  end
+
+  def add_text_transition(start_state, word, end_state)
+    start_state.add_transition(
+      Gitsh::TabCompletion::Matchers::TextMatcher.new(word),
+      end_state,
+    )
   end
 end
