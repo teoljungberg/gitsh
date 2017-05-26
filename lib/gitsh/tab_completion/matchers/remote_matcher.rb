@@ -3,7 +3,7 @@ require 'gitsh/tab_completion/matchers/base_matcher'
 module Gitsh
   module TabCompletion
     module Matchers
-      class RemoteMatcher
+      class RemoteMatcher < BaseMatcher
         def initialize(env)
           @env = env
         end
